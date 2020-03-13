@@ -1,0 +1,135 @@
+def display_menu():
+    print("NFL List Program")
+    print("Hello my name is Timothy Reyome")
+    print("This is a program I have designed")
+    print("It it is designed to help users keep track of NFL teams")
+    print("Users can add, edit, delete, and find out info about teams")
+    print("Thank you and have a nice day ")
+    print()
+    print("COMMAND MENU")
+    print("list - List all teams")
+    print("add - Add a team")
+    print("del - Delete a team")
+    print("find - Find a team")
+    print("edit - Edit a team")
+
+    print("exit - Exit program")
+    print()
+
+
+def list(team_list):
+    if len(team_list) == 0:
+        print("There are no teams in the list.\n")
+        return
+    else:
+        i = 0
+        for team in team_list:
+            row = team
+            print("{:}. {:20} {:4} {:3} {:3} {:4} {:5}".format(
+                i + 1, row["name"], row["year"], row["points"], row["total"],
+                row["scrimage"], row["yards"]))
+            i += 1
+        print()
+
+
+def add(team_list):
+    name = input("Name: ")
+    year = input("Year: ")
+    points = input("Points: ")
+    total = input("Total: ")
+    scrimage = input("Scrimage: ")
+    yards = input("Yards: ")
+    team = {}
+    team["name"] = (name)
+    team["year"] = (year)
+    team["points"] = (points)
+    team["total"] = (total)
+    team["scrimage"] = (scrimage)
+    team["yards"] = (yards)
+    team_list.append(team)
+    print(team["name"] + " was added.\n")
+
+
+def delete(team_list):
+    number = int(input("number: "))
+    if number < 1 or number > len(team_list):
+        print("Invalid team number.\n")
+    else:
+        team = team_list.pop(number - 1)
+        print(team["name"] + " was deleted.\n")
+
+
+def find_by_year(team_list):
+    year = int(input("Year: "))
+    for team in team_list:
+        if int(team["year"]) == year:
+            print(team["name"] + " Season " + str(year))
+    print()
+
+def write_report(team_list, filename):
+  try:
+    with open(filename, "w") as outfile:
+      outfile.write("{:^60}".format("Report") + "\n")
+      outfile.write("{{:20} {:4} {:3} {:3} {:4} {:5}".format("Team Name", "Year", "Points", "Totoal", "Scrimage", "Yards"))
+      i = 0
+      
+      for team in team_list:
+        row = team
+        outfile.write("{:}. {:20} {:4} {:3} {:3} {:4} {:5}".format(i+1,row["name"],row["year"],row["points"],row["total"],row["scrimage"],row["yards"]) + "\n")
+        print("{:}. {:20} {:4} {:3} {:3} {:4} {:5}")
+        i += 1
+  except IOError:
+    print("You have encountered an IOError - check name and file path!!\n")
+  except:
+    print("You have encountered an unexpected error!!\n")
+    print()
+def read_file(filename):
+  theList = []
+  with open(filename, "r") as inFile:
+    data = inFile.readlines()
+    print(data)
+    for line in data:
+      theD = {}
+      values = line.split(", ")
+      values[-1] = values[-1].replace("\n", "")
+      theD["name"] = values[0]
+      theD["year"] = values[1]
+      theD["points"] = values[2]
+      theD["total"] = values[3]
+      theD["scrimage"] = values[4]
+      theD["yards"] = values[5]
+      theList.append(theD)
+
+    return theList
+
+
+def edit_team(team_list):
+   print("write edit code")
+
+
+def main():
+  filename = "nfl.txt"
+  team_list = read_file(filename)
+  write_report(team_list, "teamReport.txt")
+  display_menu()
+  while True:
+    command = input("Command: ")
+    if command == "list":
+      list(team_list)
+    elif command == "add":
+      add(team_list)
+    elif command == "del":
+      delete(team_list)
+    elif command == "find":
+      find_by_year(team_list)
+    elif command == "edit":
+      edit_team(team_list)
+    elif command == "exit":
+      break
+    else:
+      print("Not a valid command. Please try again.\n")
+      print("Thank you for using the program and have a good day")
+if __name__ == "__main__":
+  main()
+
+
